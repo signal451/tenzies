@@ -1,0 +1,113 @@
+@import url('https://fonts.googleapis.com/css2?family=Karla:wght@400;500;600;700&display=swap');
+
+html {
+  box-sizing: border-box;
+  font-family: 'Karla', Helvetica, sans-serif, Verdana;  
+}
+
+body{
+  background: #0B2434;
+}
+
+*, *::before, *::after {
+  box-sizing: inherit;
+}
+
+.block {
+  width: 90%;
+  height: 27rem;
+  margin: auto;
+  border-radius: 0.5rem;
+  margin-top: 2rem;
+  background-color: #F5F5F5;
+}
+
+.upper-part > .title {
+  text-align: center;
+  padding-top: 0.6rem;
+} 
+
+.upper-part > .description {
+  text-align: center;
+  font-weight: 400;
+  padding: 0 0.5rem;
+}
+
+.dice-container {
+  display: grid; /* Enable grid layout */
+  width: 90%;
+  margin: auto;
+  padding-top: 1rem;
+  grid-template-columns: repeat(5, 1fr); /* Create 5 columns with equal width */
+  grid-template-rows: repeat(2, 1fr); /* Create 2 rows with equal height */
+  grid-gap: 10px; /* Add 10px of space between the grid items */
+}
+
+.die-face {
+  background-color: white;
+  border-radius: 10px;
+  text-align: center;
+  cursor: pointer;
+  box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.15);
+}
+
+.button {
+  display: block;
+  margin: 2rem auto;
+  width: 90px;
+  height: 50px;
+  background: #5035FF;
+  font-size: large;
+  color: white;
+  font-weight: 600;
+  border-radius: 5px;
+  font-family: 'Karla', Helvetica, sans-serif, Verdana;  
+  border: none;
+  outline: none;
+  cursor: pointer;
+}
+
+
+
+
+@media screen and (min-width: 400px) {
+  .dice-container > .die-face {
+    width: 50px;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}
+
+@media screen and (min-width: 500px) {
+ .dice-container {
+  width: 60%;
+ }
+}
+
+
+@media screen and (min-width: 600px){
+  .upper-part > .description {
+    padding: 0 1.5rem;
+  }
+}
+
+@media screen and (min-width: 800px) {
+  .block {
+    width: 70%;
+  }
+}
+
+
+@media screen and (min-width: 1200px ){
+  .block {
+    width: 40%;
+  }
+}
+
+@media screen and (min-width: 1200px) {
+  .dice-container {
+   width: 50%;
+  }
+ }
