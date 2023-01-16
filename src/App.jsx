@@ -42,8 +42,6 @@ function App() {
   };
 
 
-  // we are calculating stuffs in dice_selection ... 
-  // -> and roll is just doing generating numbers
   const dice_selection = (dice) => {
     const dices = num.map((oldDice) => {
       if (oldDice.id === dice.id) {
@@ -52,7 +50,6 @@ function App() {
       }
       return oldDice;
     });
-
     setNumber(dices);
   };
 
@@ -68,7 +65,16 @@ function App() {
         }
         temp = oldDice.dice_number
         return oldDice
-      })  
+      })
+  
+      const duplicatedDice = newDice.filter((ele) => {
+        return ele.dice_number === temp && ele.isSelected === true
+      })
+       
+      if(duplicatedDice.length === 10) {
+        setStatus("Reset game")
+      }
+  
       setNumber(newDice)
     }
     else {
