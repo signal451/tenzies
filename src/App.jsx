@@ -6,16 +6,13 @@ import Button from "./components/button";
 
 /*
   * TODO 1.16
-    1. roll to generate new random numbers
-    2. click to select numbers -> also unselect numbers
-    3. selected numbers won't generate when we roll the numbers
-    4. if all selected numbers are same we won the game ⭐
+    3. if all selected numbers are same we won the game ⭐
   */
 
 function App() {
   const [num, setNumber] = useState([]);
-
-  // this section kinda wront
+  const [status, setStatus] = useState("Roll")
+  // this section kinda wrong => 🤔
   useEffect(() => {
     let arr = [];
 
@@ -44,19 +41,47 @@ function App() {
     return <>{dice}</>;
   };
 
-  const dice_selection = (dices) => {
-    const newDice = num.map((oldDice) => {
-      if (oldDice.id === dices.id) {
+
+  // we are calculating stuffs in dice_selection ... 
+  // -> and roll is just doing generating numbers
+  const dice_selection = (dice) => {
+    const dices = num.map((oldDice) => {
+      if (oldDice.id === dice.id) {
         let checkIsSelected = oldDice.isSelected === true ? false : true;
         return { ...oldDice, isSelected: checkIsSelected };
       }
       return oldDice;
     });
-    setNumber(newDice);
+
+    setNumber(dices);
   };
 
   const diceRoll = (e) => {
     e.preventDefault();
+
+    if(status !== "Reset game") {
+      let temp = 0;
+      const newDice = num.map((oldDice) => {
+        let randomNum = Math.floor(Math.random() * 10 + 1);
+        if(oldDice.isSelected != true) {
+          return {...oldDice, dice_number: randomNum}
+        }
+        temp = oldDice.dice_number
+        return oldDice
+      })  
+      setNumber(newDice)
+    }
+    else {
+      const resetDice = num.map((oldDice) => {
+        let randomNum = Math.floor(Math.random() * 10 + 1);
+        if(oldDice.isSelected == true) {
+          return {...oldDice,isSelected: false, dice_number: randomNum}
+        }
+      })
+      setStatus("Roll")
+      setNumber(resetDice)
+    }
+
   };
 
   return (
@@ -74,7 +99,7 @@ function App() {
           </div>
         </div>
         <div className="dice-container">{generateDices(num)}</div>
-        <Button roll={diceRoll} />
+        <Button roll={diceRoll} description={status} />
       </div>
     </div>
   );
