@@ -1,9 +1,9 @@
 import React, { PureComponent } from "react";
 
-function Button() {
+function Button(props) {
   return (
     <div className="roll">
-      <button className="button">Roll</button>
+      <button className="button" onClick={props.roll}>Roll</button>
     </div>
   );
 }

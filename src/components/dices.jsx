@@ -2,7 +2,7 @@ import React from "react";
 
 function Dices(props) {
     return (
-        <div className="die-face">
+        <div className={props.isSelected === true ? "selected-die-face" : "die-face"} onClick={props.func}>
             <h2> {props.num} </h2>
         </div>
     );

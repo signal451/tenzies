@@ -1,39 +1,63 @@
-import React, { useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import Dices from "./components/dices";
-import {nanoid} from "nanoid"
+import { nanoid } from "nanoid";
 import "./App.css";
 import Button from "./components/button";
 
 /*
-  * TODO 1.15
-    3. style button
+  * TODO 1.16
+    1. roll to generate new random numbers
+    2. click to select numbers -> also unselect numbers
+    3. selected numbers won't generate when we roll the numbers
+    4. if all selected numbers are same we won the game ⭐
   */
 
-const generateDices = (arr) => {
-  const dice = arr.map((numbers) => {
-    return <Dices key={nanoid()} num={numbers}/>
-  })
-  return (
-    <>
-    {dice}
-    </>
-  )
-}
-
-
 function App() {
+  const [num, setNumber] = useState([]);
 
-  const [num, setNumber] = useState([])
-
+  // this section kinda wront
   useEffect(() => {
-    let arr = []
+    let arr = [];
 
-    for(let i=0; i < 10; i++) {
-      let randomNum = Math.floor((Math.random() * 10) + 1)
-      arr.push(randomNum)
+    for (let i = 0; i < 10; i++) {
+      let randomNum = Math.floor(Math.random() * 10 + 1);
+      arr.push({
+        id: nanoid(),
+        dice_number: randomNum,
+        isSelected: false,
+      });
     }
-    setNumber(arr)
-  }, [])
+    setNumber(arr);
+  }, []);
+
+  const generateDices = (arr) => {
+    const dice = arr.map((numbers) => {
+      return (
+        <Dices
+          key={numbers.id}
+          num={numbers.dice_number}
+          isSelected={numbers.isSelected}
+          func={() => dice_selection(numbers)}
+        />
+      );
+    });
+    return <>{dice}</>;
+  };
+
+  const dice_selection = (dices) => {
+    const newDice = num.map((oldDice) => {
+      if (oldDice.id === dices.id) {
+        let checkIsSelected = oldDice.isSelected === true ? false : true;
+        return { ...oldDice, isSelected: checkIsSelected };
+      }
+      return oldDice;
+    });
+    setNumber(newDice);
+  };
+
+  const diceRoll = (e) => {
+    e.preventDefault();
+  };
 
   return (
     <div className="app">
@@ -49,10 +73,8 @@ function App() {
             </p>
           </div>
         </div>
-        <div className="dice-container">
-          {generateDices(num)}
-        </div>
-          <Button/> 
+        <div className="dice-container">{generateDices(num)}</div>
+        <Button roll={diceRoll} />
       </div>
     </div>
   );
