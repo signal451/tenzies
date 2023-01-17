@@ -5,13 +5,13 @@ import "./App.css";
 import Button from "./components/button";
 
 /*
-  * TODO 1.16
-    3. if all selected numbers are same we won the game ⭐
-  */
+ * TODO 1.17
+ *
+ */
 
 function App() {
   const [num, setNumber] = useState([]);
-  const [status, setStatus] = useState("Roll")
+  const [status, setStatus] = useState("Roll");
   // this section kinda wrong => 🤔
   useEffect(() => {
     let arr = [];
@@ -41,53 +41,50 @@ function App() {
     return <>{dice}</>;
   };
 
-
   const dice_selection = (dice) => {
+    let temp = 0;
     const dices = num.map((oldDice) => {
       if (oldDice.id === dice.id) {
-        let checkIsSelected = oldDice.isSelected === true ? false : true;
-        return { ...oldDice, isSelected: checkIsSelected };
+        if (oldDice.isSelected === true) {
+          return { ...oldDice, isSelected: false };
+        }
+        return { ...oldDice, isSelected: true };
       }
+      temp = oldDice.dice_number;
       return oldDice;
     });
     setNumber(dices);
+    // I just need to count how many dices are duplicated and check if its equal to 10
+    const duplicatedDice = dices.filter((ele) => {
+      return ele.dice_number === temp && ele.isSelected === true;
+    });
+
+    if (duplicatedDice.length === 10) {
+      setStatus("Reset game");
+    }
   };
 
   const diceRoll = (e) => {
     e.preventDefault();
-
-    if(status !== "Reset game") {
-      let temp = 0;
+    if (status !== "Reset game") {
       const newDice = num.map((oldDice) => {
         let randomNum = Math.floor(Math.random() * 10 + 1);
-        if(oldDice.isSelected != true) {
-          return {...oldDice, dice_number: randomNum}
+        if (oldDice.isSelected != true) {
+          return { ...oldDice, dice_number: randomNum };
         }
-        temp = oldDice.dice_number
-        return oldDice
-      })
-  
-      const duplicatedDice = newDice.filter((ele) => {
-        return ele.dice_number === temp && ele.isSelected === true
-      })
-       
-      if(duplicatedDice.length === 10) {
-        setStatus("Reset game")
-      }
-  
-      setNumber(newDice)
-    }
-    else {
+        return oldDice;
+      });
+      setNumber(newDice);
+    } else {
       const resetDice = num.map((oldDice) => {
         let randomNum = Math.floor(Math.random() * 10 + 1);
-        if(oldDice.isSelected == true) {
-          return {...oldDice,isSelected: false, dice_number: randomNum}
+        if (oldDice.isSelected == true) {
+          return { ...oldDice, isSelected: false, dice_number: randomNum };
         }
-      })
-      setStatus("Roll")
-      setNumber(resetDice)
+      });
+      setStatus("Roll");
+      setNumber(resetDice);
     }
-
   };
 
   return (
